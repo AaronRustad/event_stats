@@ -5,12 +5,11 @@ defmodule EventStatsTest do
   @opts EventStats.init([])
 
   test "returns world" do
-    conn = conn(:get, "/hello")
+    conn = conn(:get, "/players/not_founds")
     conn = EventStats.call(conn, @opts)
 
     assert conn.state == :sent
     assert conn.status == 200
-    assert conn.resp_body == "world"
   end
 
   test "returns oops" do

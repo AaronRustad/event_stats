@@ -1,14 +1,10 @@
 defmodule CommonHttp do
-  use HTTPotion.Base
   alias Timex.Date; alias Timex.DateFormat
 
-  def process_url(url) do
-    es_url = Application.get_env(:event_stats, :elasticsearch_url)
-    "#{es_url}/#{url}"
-  end
-
   def query(path, body) do
-    post(path, body).body
+    url = process_url(path)
+
+    http_client.post(url, body).body
     |> Poison.decode!
     |> process_results
   end
@@ -28,6 +24,15 @@ defmodule CommonHttp do
 
   def current_index do
     "logstash-" <> DateFormat.format!(Date.now, "%Y.%m.%d", :strftime)
+  end
+
+  defp process_url(path) do
+    es_url = Application.get_env(:event_stats, :elasticsearch_url)
+    "#{es_url}/#{path}"
+  end
+
+  defp http_client do
+    Application.get_env(:common_http, :http_client)
   end
 end
 

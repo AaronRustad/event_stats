@@ -1,6 +1,5 @@
 defmodule Player do
   import CommonHttp
-  alias Timex.Date; alias Timex.DateFormat
 
   @not_found_query Poison.encode!(%{
       :fields => ["@fields.params.uuid", "@fields.env.referer"],

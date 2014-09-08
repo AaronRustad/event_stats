@@ -6,11 +6,7 @@ defmodule EventStats do
   plug :match
   plug :dispatch
 
-  get "/hello" do
-    send_resp(conn, 200, "world")
-  end
-
-  get "/not_founds" do
+  get "/players/not_founds" do
     send_resp(conn, 200, Player.not_founds, as: :json)
   end
 
@@ -22,9 +18,6 @@ defmodule EventStats do
     send_resp(conn, 404, "oops")
   end
 end
-
-AppConfig.start_link
-AppConfig.add_conf(:elasticsearch_url, "http://localhost:9214")
 
 IO.puts "Running EventStats with Cowboy on http://localhost:4000"
 Plug.Adapters.Cowboy.http EventStats, []
